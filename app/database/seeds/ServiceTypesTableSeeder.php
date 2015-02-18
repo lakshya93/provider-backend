@@ -9,12 +9,13 @@ class ServiceTypesTableSeeder extends Seeder {
         ServiceType::create([
             'id' => 1,
             'name' => 'Electrician',
-            'icon' => 'ion_outlet',
+            'icon' => 'ion-outlet',
             ]);
 
         ServiceType::create([
             'id' => 2,
             'name' => 'Plumber',
+            'icon' => 'ion-wrench',
             ]);
 
         ServiceType::create([
@@ -25,6 +26,7 @@ class ServiceTypesTableSeeder extends Seeder {
         ServiceType::create([
             'id' => 4,
             'name' => 'Carpenter',
+            'icon' => 'ion-hammer'
             ]);
     }
 }
