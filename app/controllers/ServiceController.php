@@ -1,6 +1,6 @@
 <?php
 
-class ServiceTypeController extends \BaseController {
+class ServiceController extends \BaseController {
 
 	/**
 	 * Display a listing of the resource.
@@ -9,8 +9,12 @@ class ServiceTypeController extends \BaseController {
 	 */
 	public function index()
 	{
-		$serviceTypes = ServiceType::all();
-		return Response::json($serviceTypes);
+		$services = Service::all();
+		if($services)
+			return Response::json($services);
+		else
+			return Response::json(['success' => false,
+				'alert' => 'Failed to retrieve all services']);
 	}
 
 
@@ -21,7 +25,7 @@ class ServiceTypeController extends \BaseController {
 	 */
 	public function store()
 	{
-		$validate = Validator::make(Input::all(), ServiceType::$rules);
+		$validate = Validator::make(Input::all(), Service::$rules);
 		if($validate->fails())
 		{
 			return Response::json(['success' => false,
@@ -31,12 +35,12 @@ class ServiceTypeController extends \BaseController {
 		else
 		{
 			$details = Input::all();
-			if(ServiceType::create(Input::all()))
+			if(Service::create(Input::all()))
 				return Response::json(['success' => true,
-					'alert' => 'Successfully created service_type']);
+					'alert' => 'Successfully created service']);
 			else
 				return Response::json(['success' => false,
-					'alert' => 'Failed to create service_type']);
+					'alert' => 'Failed to create service']);
 		}
 	}
 
@@ -49,13 +53,14 @@ class ServiceTypeController extends \BaseController {
 	 */
 	public function show($id)
 	{
-		$service_type = ServiceType::find($id);
-		if($service_type)
-			return Response::json($service_type);
+		$service = Service::find($id);
+		if($service)
+			return Response::json($service);
 		else
 			return Response::json(['success' => false,
-				'alert' => 'service_type not found']);
+				'alert' => 'service not found']);
 	}
+
 
 	/**
 	 * Update the specified resource in storage.
@@ -65,8 +70,8 @@ class ServiceTypeController extends \BaseController {
 	 */
 	public function update($id)
 	{
-		$service_type = ServiceType::find($id);
-		$validate = Validator::make(Input::all(), ServiceType::$rules);
+		$service = Service::find($id);
+		$validate = Validator::make(Input::all(), Service::$rules);
 		if($validate->fails())
 		{
 			return Response::json(['success' => false,
@@ -76,12 +81,12 @@ class ServiceTypeController extends \BaseController {
 		else
 		{
 			$details = Input::all();
-			if($service_type->update(Input::all()))
+			if($service->update(Input::all()))
 				return Response::json(['success' => true,
-					'alert' => 'Successfully updated service_type']);
+					'alert' => 'Successfully updated service']);
 			else
 				return Response::json(['success' => false,
-					'alert' => 'Failed to update service_type']);
+					'alert' => 'Failed to update service']);
 		}
 	}
 
@@ -94,11 +99,11 @@ class ServiceTypeController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
-		if(ServiceType::destroy($id))
+		if(Service::destroy($id))
 			return Response::json(['success' => true,
-				'alert' => 'Successfully deleted service_type']);
+				'alert' => 'Successfully deleted service']);
 		else
 			return Response::json(['success' => false,
-				'alert' => 'Failed to delete service_type']);
+				'alert' => 'Failed to delete service']);
 	}
 }
