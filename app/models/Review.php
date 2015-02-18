@@ -10,4 +10,9 @@ class Review extends Eloquent {
 		'description' => 'required'
 	];
 
+	public function service()
+	{
+		return $this->belongsTo('Service');
+	}
+
 }

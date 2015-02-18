@@ -9,8 +9,8 @@ class ReviewController extends \BaseController {
 	 */
 	public function index($serviceId)
 	{
-		$reviews = Reviews::where('service_id', $serviceId)->get();
-		//$reviews = Services::find($serviceId)->reviews();
+		//$reviews = Reviews::where('service_id', $serviceId)->get();
+		$reviews = Service::find($serviceId)->reviews();
 		return Response::json('$reviews');
 	}
 

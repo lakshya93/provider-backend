@@ -17,4 +17,10 @@ class Service extends Eloquent {
 	{
 		return $this->belongsTo('User');
 	}
+
+	public function reviews()
+	{
+		return $this->hasMany('Review');
+	}
+
 }
