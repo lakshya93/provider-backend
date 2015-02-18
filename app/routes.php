@@ -17,3 +17,4 @@ Route::get('/', function()
 });
 
 Route::resource('users', 'UserController', ['except' => ['create', 'edit']]);
+Route::resource('service-types', 'ServiceTypeController', ['except' => ['create', 'edit']]);
