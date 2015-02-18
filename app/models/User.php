@@ -36,11 +36,11 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 			'email' => 'unique:users,email',
 		];
 
-	/**
-	 * The attributes excluded from the model's JSON form.
-	 *
-	 * @var array
-	 */
 	protected $hidden = array('password', 'remember_token');
+
+	public function services ()
+	{
+		return $this->hasMany('Service');
+	}
 
 }
