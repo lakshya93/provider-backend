@@ -27,4 +27,9 @@ class Service extends Eloquent {
 	{
 		return $this->hasMany('Review');
 	}
+
+	public function images()
+	{
+		return $this->hasMany('Image');
+	}
 }

@@ -1,4 +1,4 @@
-<?php
+	<?php
 
 return array(
 
@@ -57,7 +57,7 @@ return array(
 			'host'      => 'localhost',
 			'database'  => 'provider',
 			'username'  => 'root',
-			'password'  => '',
+			'password'  => 'peri',
 			'charset'   => 'utf8',
 			'collation' => 'utf8_unicode_ci',
 			'prefix'    => '',

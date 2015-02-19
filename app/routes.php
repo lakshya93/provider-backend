@@ -20,6 +20,7 @@ Route::resource('users', 'UserController', ['except' => ['create', 'edit']]);
 Route::resource('service-types', 'ServiceTypeController', ['except' => ['create', 'edit']]);
 Route::resource('services', 'ServiceController', ['except' => ['create', 'edit']]);
 Route::resource('services.reviews', 'ReviewController', ['except' => ['create', 'edit']]);
+Route::resource('services.images', 'ImageController', ['except' => ['create', 'edit', 'show']]);
 
 Route::get('requests/sent-requests', 'RequestController@sentRequests');
 Route::get('requests/recieved-requests', 'RequestController@recievedRequests');

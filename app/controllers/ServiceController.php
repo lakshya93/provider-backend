@@ -17,6 +17,22 @@ class ServiceController extends \BaseController {
 				'alert' => 'Failed to retrieve all services']);
 	}
 
+	public function indexType()
+	{
+		$serviceTypeId = Input::get('service_type_id');
+		$services = Service::where('service_type_id', $serviceTypeId)->get();
+
+		foreach($services as $service) {
+			$service->images = $service->images();
+		}
+
+		if($services)
+			return Response::json($services);
+		else
+			return Response::json(['success' => false,
+				'alert' => 'Failed to retrieve services']);
+	}
+
 
 	/**
 	 * Store a newly created resource in storage.
@@ -54,7 +70,10 @@ class ServiceController extends \BaseController {
 	public function show($id)
 	{
 		$service = Service::find($id);
-		if($service)
+		$images = Image::where('service_id', $id)->get();
+		if($images && $service)
+			return Response::json([$service, $images]);
+		else if($service)
 			return Response::json($service);
 		else
 			return Response::json(['success' => false,
