@@ -22,7 +22,7 @@ class CreateUsersTable extends Migration {
 			$table->string('password');
 			$table->date('dob');
 			$table->string('photo');
-			$table->text('address');
+			$table->longText('address');
 			$table->string('mobile');
 			$table->string('landline');
 			$table->string('zipcode');

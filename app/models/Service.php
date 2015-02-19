@@ -17,4 +17,9 @@ class Service extends Eloquent {
 	{
 		return $this->belongsTo('User');
 	}
+
+	public function requesters()
+	{
+		return $this->belongsToMany('User', 'requests');
+	}
 }

@@ -15,7 +15,7 @@ class ServicesTableSeeder extends Seeder {
         Service::create([
             'user_id' => 1,
             'service_type_id' => 2,
-            'business_name' => 'Mutthuraj Plumbers',
+            'business_name' => 'Mario Plumbers',
         ]);
 
         Service::create([

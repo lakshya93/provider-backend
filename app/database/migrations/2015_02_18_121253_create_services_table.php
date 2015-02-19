@@ -17,13 +17,13 @@ class CreateServicesTable extends Migration {
 			$table->increments('id');
 
 			$table->integer('user_id')->unsigned();
-			$table->foreign('user_id')->references('id')->on('users');
+			$table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
 			$table->integer('service_type_id')->unsigned();
-			$table->foreign('service_type_id')->references('id')->on('service_types');
+			$table->foreign('service_type_id')->references('id')->on('service_types')->onUpdate('cascade')->onDelete('cascade');
 			$table->integer('rating');
 
-			$table->text('business_name');
-			$table->text('business_address');
+			$table->string('business_name');
+			$table->longText('business_address');
 			$table->string('business_mobile');
 			$table->string('business_landline');
 			$table->string('business_zipcode');
