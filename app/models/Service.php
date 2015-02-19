@@ -22,4 +22,9 @@ class Service extends Eloquent {
 	{
 		return $this->belongsToMany('User', 'requests');
 	}
+
+	public function reviews()
+	{
+		return $this->hasMany('Review');
+	}
 }
