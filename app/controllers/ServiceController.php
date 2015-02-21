@@ -9,9 +9,15 @@ class ServiceController extends \BaseController {
 	 */
 	public function index()
 	{
-		$serviceType = Input::get('service_type');
-		$serviceTypeId = ServiceType::where('name', $serviceType)->first()->id;
-		$services = Service::where('service_type_id', $serviceTypeId)->get();
+		if(Input::has('service_type'))
+		{
+			$serviceTypeId = ServiceType::where('name', Input::get('service_type'))->first()->id;
+			$services = Service::where('service_type_id', $serviceTypeId)->get();
+		}
+		else if(Input::has('user_id'))
+		{
+			$services = Service::where('user_id', Input::get('user_id'))->get();
+		}
 
 		if($services)
 			return Response::json($services);
@@ -80,10 +86,10 @@ class ServiceController extends \BaseController {
 		$details = Input::all();
 		if(Input::has('rating'))
 		{
-			$details['rating'] = $service['rating'] * $service['rate_count'] + Input::get('rating');
-			$details['rate_count'] = $service['rate_count'] + 1;
+			$details['rating'] = $service->rating * $service->rate_count + Input::get('rating');
+			$details['rate_count'] = $service->rate_count + 1;
 		}
-		if($service->update($detials))
+		if($service->update($details))
 			return Response::json(['success' => true,
 				'alert' => 'Successfully updated service']);
 		else
