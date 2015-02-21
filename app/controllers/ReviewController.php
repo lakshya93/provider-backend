@@ -9,8 +9,12 @@ class ReviewController extends \BaseController {
 	 */
 	public function index($serviceId)
 	{
-		//$reviews = Reviews::where('service_id', $serviceId)->get();
-		$reviews = Service::find($serviceId)->reviews();
+		$reviews = Review::where('service_id', $serviceId)->get();
+		foreach($reviews as $review)
+		{
+			$user = User::find($review->user_id);
+			$review['user_name'] = $user->first_name . ' ' . $user->last_name;
+		}
 		return Response::json($reviews);
 	}
 
@@ -31,7 +35,7 @@ class ReviewController extends \BaseController {
 		}
 		else
 		{
-			if(Reviews::create(Input::all()))
+			if(Review::create(Input::all()))
 				return Response::json(['success' => true,
 					                   'alert' => 'Successfully created review']);
 			else
@@ -39,37 +43,6 @@ class ReviewController extends \BaseController {
 					                   'alert' => 'Failed to create review']);
 		}
 	}
-
-
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function show($serviceId, $id)
-	{
-		$review = Review::find($id);
-		if($review)
-			return Response::json($review);
-		else
-			return Response::json(['success' => false,
-									'alert' => 'Review not found']);
-	}
-
-
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function update($id)
-	{
-
-		//
-	}
-
 
 	/**
 	 * Remove the specified resource from storage.
@@ -79,12 +52,16 @@ class ReviewController extends \BaseController {
 	 */
 	public function destroy($serviceId, $id)
 	{
-		if(Review::destroy($id))
-			return Response::json(['success' => true,
-									'alert' => 'Successfully deleted review']);
-		else
-			return Response::json(['success' => false,
-									'alert' => 'Failed to delete review']);
+		$review = Review::find($id);
+		if($serviceId == $review->service_id)
+		{
+			if(Review::destroy($id))
+				return Response::json(['success' => true,
+										'alert' => 'Successfully deleted review']);
+			else
+				return Response::json(['success' => false,
+										'alert' => 'Failed to delete review']);
+		}
 	}
 
 

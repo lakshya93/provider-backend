@@ -7,7 +7,7 @@ class Service extends Eloquent {
 	protected $fillable = ['user_id', 'service_type_id', 'rating', 'business_name', 'business_address',
 		'business_mobile', 'business_landline', 'business_zipcode', 'business_city'];
 
-	public static $rules = [
+	public static $storeRules = [
 		'user_id' => 'required',
 		'service_type_id' => 'required',
 		'business_name' => 'required',

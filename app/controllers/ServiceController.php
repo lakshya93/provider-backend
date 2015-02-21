@@ -9,22 +9,9 @@ class ServiceController extends \BaseController {
 	 */
 	public function index()
 	{
-		$services = Service::all();
-		if($services)
-			return Response::json($services);
-		else
-			return Response::json(['success' => false,
-				'alert' => 'Failed to retrieve all services']);
-	}
-
-	public function indexType()
-	{
-		$serviceTypeId = Input::get('service_type_id');
+		$serviceType = Input::get('service_type');
+		$serviceTypeId = ServiceType::where('name', $serviceType)->first()->id;
 		$services = Service::where('service_type_id', $serviceTypeId)->get();
-
-		foreach($services as $service) {
-			$service->images = $service->images();
-		}
 
 		if($services)
 			return Response::json($services);
@@ -90,23 +77,19 @@ class ServiceController extends \BaseController {
 	public function update($id)
 	{
 		$service = Service::find($id);
-		$validate = Validator::make(Input::all(), Service::$rules);
-		if($validate->fails())
+		$details = Input::all();
+		if(Input::has('rating'))
 		{
-			return Response::json(['success' => false,
-				'alert' => 'Failed to validate',
-				'messages' => $validate->messages()]);
+			$details['rating'] = $service['rating'] * $service['rate_count'] + Input::get('rating');
+			$details['rate_count'] = $service['rate_count'] + 1;
 		}
+		if($service->update($detials))
+			return Response::json(['success' => true,
+				'alert' => 'Successfully updated service']);
 		else
-		{
-			$details = Input::all();
-			if($service->update(Input::all()))
-				return Response::json(['success' => true,
-					'alert' => 'Successfully updated service']);
-			else
-				return Response::json(['success' => false,
-					'alert' => 'Failed to update service']);
-		}
+			return Response::json(['success' => false,
+				'alert' => 'Failed to update service']);
+
 	}
 
 

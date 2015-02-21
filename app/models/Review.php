@@ -7,6 +7,8 @@ class Review extends Eloquent {
 	protected $fillable = ['user_id', 'service_id', 'description'];
 
 	public static $rules = [
+		'user_id' => 'required',
+		'service_id' => 'required',
 		'description' => 'required'
 	];
 

@@ -58,11 +58,10 @@ class RequestController extends \BaseController {
 		$requests = Requestx::where('user_id', $userId)->get();
 		if($requests) {
 			foreach($requests as $request) {
-				$service = Service::find($request->service_id);
-				$request['business_name'] = $service->business_name;
+				$request['service'] = Service::find($request->service_id);
 
-				$user = User::find($service->user_id);
-				$request['user_name'] = $user->first_name . ' ' . $user->last_name;		//user_name => provider's name
+				$user = User::find($request['service']->user_id);
+				$request['service']->user_name = $user->first_name . ' ' . $user->last_name;		//user_name => provider's name
 
 			}
 			return Response::json($requests);
@@ -70,7 +69,7 @@ class RequestController extends \BaseController {
 	}
 
 
-	public function recievedRequests()
+	public function receivedRequests()
 	{
 		$userId = Input::get('user_id');
 		$serviceIdsObject = Service::select('id')->where('user_id', $userId)->get();
