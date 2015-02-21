@@ -21,7 +21,7 @@ class CreateServicesTable extends Migration {
 			$table->integer('service_type_id')->unsigned();
 			$table->foreign('service_type_id')->references('id')->on('service_types')->onUpdate('cascade')->onDelete('cascade');
 			$table->integer('rating');
-			$table->integer('rate_count');
+			$table->integer('rate_count')->unsigned()->default(0);
 
 			$table->string('business_name');
 			$table->longText('business_address');

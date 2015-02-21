@@ -10,6 +10,9 @@ header('Access-Control-Allow-Origin: *');
 | and give it the Closure to execute when that URI is requested.
 |
 */
+Route::post('login', 'UserController@login')->before('guest');
+Route::get('logout', 'UserController@logout')->before('auth');
+
 
 Route::resource('users', 'UserController', ['except' => ['create', 'edit']]);
 Route::resource('service-types', 'ServiceTypeController', ['except' => ['create', 'edit']]);

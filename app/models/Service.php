@@ -4,10 +4,10 @@ class Service extends Eloquent {
 
 	protected $table = 'services';
 
-	protected $fillable = ['user_id', 'service_type_id', 'rating', 'business_name', 'business_address',
+	protected $fillable = ['user_id', 'service_type_id', 'rating', 'rate_count', 'business_name', 'business_address',
 		'business_mobile', 'business_landline', 'business_zipcode', 'business_city'];
 
-	public static $storeRules = [
+	public static $rules = [
 		'user_id' => 'required',
 		'service_type_id' => 'required',
 		'business_name' => 'required',

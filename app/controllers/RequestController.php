@@ -2,6 +2,7 @@
 
 class RequestController extends \BaseController {
 
+	//remove index() after testing
 	public function index()
 	{
 		$requests = Requestx::all();
@@ -45,10 +46,10 @@ class RequestController extends \BaseController {
 			$details = Input::all();
 			if($request->update($details))
 				return Response::json(['success' => true,
-					'alert' => 'Successfully created service']);
+					'alert' => 'Successfully updated request']);
 			else
 				return Response::json(['success' => false,
-					'alert' => 'Failed to create service']);
+					'alert' => 'Failed to update request']);
 		}
 	}
 

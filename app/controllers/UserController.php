@@ -136,5 +136,22 @@ class UserController extends \BaseController {
 									'alert' => 'Failed to delete user']);
 	}
 
+	public function login()
+	{
+		$credentials['email'] = Input::get('email');
+		$credentials['password'] = Input::get('password');
+		if(Auth::attempt($credentials, true))
+		{
+			$user = User::where('email', $credentials['email'])->get();
+			return Response::json($user);
+		}
+	}
+
+	public function logout()
+	{
+		Auth::logout();
+		return Response::json(['success' => true,
+			'alert' => 'Logged Out']);
+	}
 
 }

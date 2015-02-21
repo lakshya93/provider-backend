@@ -48,7 +48,7 @@ Route::filter('auth', function()
 		}
 		else
 		{
-			return Redirect::guest('login');
+			return Response::json(['alert' => 'Please log in']);
 		}
 	}
 });
@@ -72,7 +72,7 @@ Route::filter('auth.basic', function()
 
 Route::filter('guest', function()
 {
-	if (Auth::check()) return Redirect::to('/');
+	if (Auth::check()) return Response::json(['alert' => 'Already logged in']);
 });
 
 /*

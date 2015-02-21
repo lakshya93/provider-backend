@@ -18,6 +18,9 @@ class ServiceController extends \BaseController {
 		{
 			$services = Service::where('user_id', Input::get('user_id'))->get();
 		}
+		//remove this else after testing
+		else
+			$services = Service::all();
 
 		if($services)
 			return Response::json($services);
@@ -88,6 +91,7 @@ class ServiceController extends \BaseController {
 		{
 			$details['rating'] = $service->rating * $service->rate_count + Input::get('rating');
 			$details['rate_count'] = $service->rate_count + 1;
+			$details['rating'] = $details['rating'] / $details['rate_count'];
 		}
 		if($service->update($details))
 			return Response::json(['success' => true,
