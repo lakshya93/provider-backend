@@ -143,7 +143,8 @@ class UserController extends \BaseController {
 		if(Auth::attempt($credentials, true))
 		{
 			$user = User::where('email', $credentials['email'])->get();
-			return Response::json($user);
+			return Response::json(['success' => true,
+									'user' => $user]);
 		}
 	}
 
@@ -151,7 +152,7 @@ class UserController extends \BaseController {
 	{
 		Auth::logout();
 		return Response::json(['success' => true,
-			'alert' => 'Logged Out']);
+								'alert' => 'Logged out']);
 	}
 
 }
