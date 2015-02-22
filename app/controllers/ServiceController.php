@@ -22,6 +22,10 @@ class ServiceController extends \BaseController {
 		else
 			$services = Service::all();
 
+		foreach($services as $service) {
+			$service->images = Image::where('service_id', $service->id)->get();
+		}
+
 		if($services)
 			return Response::json($services);
 		else

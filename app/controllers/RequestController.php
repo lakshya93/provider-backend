@@ -84,8 +84,8 @@ class RequestController extends \BaseController {
 
 		if($requests) {
 			foreach($requests as $request) {
-				$user = User::find($request->user_id);
-				$request['user_name'] = $user->first_name . ' ' . $user->last_name;		// user_name => requester's name
+
+				$request['user'] = User::find($request->user_id);		// user_name => requester's name
 
 				$service = Service::find($request->service_id);
 				$request['business_name'] = $service->business_name;
