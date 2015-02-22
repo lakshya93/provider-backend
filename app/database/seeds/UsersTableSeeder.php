@@ -16,7 +16,7 @@ class UsersTableSeeder extends Seeder {
             'address' => 'DSI',
             'mobile' => '9886077198',
             'zipcode' => '560999',
-            'lamdline' => '0801234567',
+            'landline' => '0801234567',
             'city' => 'Bangalore',
             ]);
 
@@ -30,7 +30,7 @@ class UsersTableSeeder extends Seeder {
             'address' => 'DSI',
             'mobile' => '9035209244',
             'zipcode' => '560999',
-            'lamdline' => '0801234567',
+            'landline' => '0801234567',
             'city' => 'Bangalore',
             ]);
     }

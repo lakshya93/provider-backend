@@ -35,7 +35,9 @@ class ReviewController extends \BaseController {
 		}
 		else
 		{
-			if(Review::create(Input::all()))
+			$details = Input::all();
+			$details['service_id'] = $serviceId;
+			if(Review::create($details))
 				return Response::json(['success' => true,
 					                   'alert' => 'Successfully created review']);
 			else
