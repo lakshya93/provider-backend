@@ -24,10 +24,10 @@ class RequestController extends \BaseController {
 			$details['status'] = 'pending';
 			if(Requestx::create($details))
 				return Response::json(['success' => true,
-					'alert' => 'Successfully created service']);
+					'alert' => 'Request sent']);
 			else
 				return Response::json(['success' => false,
-					'alert' => 'Failed to create service']);
+					'alert' => 'Failed to send request']);
 		}
 	}
 

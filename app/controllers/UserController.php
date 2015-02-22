@@ -120,7 +120,7 @@ class UserController extends \BaseController {
 			$validate = Validator::make(Input::all(), User::$newPasswordUpdateRules);
 			if($validate->fails)
 			{
-				return Response::json(['success' => fals,
+				return Response::json(['success' => false,
 										'alert' => 'Password must have a minimum length of 4 characters']);
 			}
 			else
@@ -152,8 +152,12 @@ class UserController extends \BaseController {
 		}
 
 		if($user->update($details))
+		{
+			$updatedUser = User::find($user->id);
 			return Response::json(['success' => true,
-									'alert' => 'Successfully updated details']);
+									'alert' => 'Successfully updated details',
+									'user' => $updatedUser]);
+		}
 		else
 			return Response::json(['success' => false,
 									'alert' => 'Failed to update details']);
