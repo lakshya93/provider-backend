@@ -31,14 +31,32 @@ class UserController extends \BaseController {
 		{
 			$details = Input::all();
 			$details['password'] = Hash::make(Input::get('password'));
+			if(Input::hasFile('image'))
+			{
+				$file = Input::file('image');
+				$extension = $file->getClientOriginalExtension();
+				$fileName = str_random(16) . '.' . $extension;
+				$destinationPath = 'uploads/images';
+				$details['photo'] = $fileName;
+
+				if(($file->move($destinationPath, $fileName)))
+				{
+					if(User::create($details))
+						return Response::json(['success' => true,
+												'alert' => 'Successfully created user']);
+					else
+						return Response::json(['success' => false,
+												'alert' => 'Failed to create user']);
+				}
+				else
+				{
+					return Response::json(['success' => false,
+											'alert' => 'Failed to upload image']);
+				}
+			}
 
 
-			if(User::create($details))
-				return Response::json(['success' => true,
-										'alert' => 'Successfully created user']);
-			else
-				return Response::json(['success' => false,
-										'alert' => 'Failed to create user']);
+
 		}
 	}
 
@@ -70,53 +88,74 @@ class UserController extends \BaseController {
 		$details = Input::all();
 		$user = User::find($id);
 
+		$imageFlag = 0;
+		$passwordFlag = 0;
+
+		//upload new image and delte old one
+		if(Input::hasFile('image'))
+		{
+			$file = Input::file('image');
+			$extension = $file->getClientOriginalExtension();
+			$destinationPath = 'uploads/images';
+
+			$oldFileName = $user->photo;
+
+			$newfileName = str_random(16) . '.' . $extension;
+			$details['photo'] = $newfileName;
+			if(($file->move($destinationPath, $newfileName)))
+			{
+				File::delete($destinationPath, $oldFileName);
+			}
+			else
+			{
+				return Response::json(['success' => false,
+										'alert' => 'Failed to upload Photo']);
+			}
+		}
+
 		//change password
 		if(Input::has('oldPassword') && Input::has('newPassword'))
 		{
 			$validate = Validator::make(Input::all(), User::$newPasswordUpdateRules);
-
-			$credentials = ['email' => $user['email'],
-							'password' => $details['oldPassword']];
-			if(!(Auth::validate($credentials)))
+			if($validate->fails)
 			{
-				return Response::json(['success' => false,
-										'alert' => 'Old password does not match']);
+				return Response::json(['success' => fals,
+										'alert' => 'Password must have a minimum length of 4 characters']);
 			}
 			else
 			{
-				$details['email'] = Input::get('email');
-				$details['password'] = Hash::make(Input::get('newPassword'));
-				if($user->update($details))
-					return Response::json(['success' => true,
-											'alert' => 'Successfully updated password']);
-				else
+				$credentials = ['email' => $user['email'],
+								'password' => $details['oldPassword']];
+				if(!(Auth::validate($credentials)))
+				{
 					return Response::json(['success' => false,
-											'alert' => 'Failed to update password']);
+											'alert' => 'Old password does not match']);
+				}
+				else
+				{
+					$details['password'] = Hash::make(Input::get('newPassword'));
+				}
 			}
 		}
 
 		//update only details
-		else
+		if(Input::has('email'))
 		{
 			$validate = Validator::make(Input::all(), User::$emailUpdateRules);
 
 			if($validate->fails())
 			{
 				return Response::json(['success' => false,
-										'alert' => 'Validate failed',
-										'messages' => $validate->messages()]);
+										'alert' => 'Email ID not unique',
 			}
-
-			else
-			{
-				if($user->update($details))
-					return Response::json(['success' => true,
-											'alert' => 'Successfully updated details']);
-				else
-					return Response::json(['success' => false,
-											'alert' => 'Failed to update details']);
-			 }
 		}
+
+		if($user->update($details))
+			return Response::json(['success' => true,
+									'alert' => 'Successfully updated details']);
+		else
+			return Response::json(['success' => false,
+									'alert' => 'Failed to update details']);
 	}
 
 
@@ -143,7 +182,8 @@ class UserController extends \BaseController {
 		if(Auth::attempt($credentials, true))
 		{
 			$user = User::where('email', $credentials['email'])->get();
-			return Response::json($user);
+			return Response::json(['success' => true.
+									'user' => $user]);
 		}
 	}
 
@@ -151,7 +191,7 @@ class UserController extends \BaseController {
 	{
 		Auth::logout();
 		return Response::json(['success' => true,
-			'alert' => 'Logged Out']);
+								'alert' => 'Logged out']);
 	}
 
 }
