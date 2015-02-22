@@ -9,25 +9,25 @@ class ReviewsTableSeeder extends Seeder {
         Review::create([
             'user_id' => 1,
             'service_id' => 3,
-            'description' => 'User 1 reviewed Service 3',
+            'description' => 'Knows safety precautions. Good job!',
         ]);
 
         Review::create([
             'user_id' => 1,
             'service_id' => 4,
-            'description' => 'User 1 reviewed Service 4',
+            'description' => 'Makes more leaks than he fixes. And he almost killed my pet duck.',
         ]);
 
         Review::create([
             'user_id' => 2,
             'service_id' => 1,
-            'description' => 'User 2 reviewed Service 1',
+            'description' => 'Cheezy! Very Cheezy! ',
         ]);
 
         Review::create([
             'user_id' => 2,
             'service_id' => 2,
-            'description' => 'User 2 reviewed Service 1',
+            'description' => 'For opening doors and windows. They do tables as well.',
         ]);
 
     }
