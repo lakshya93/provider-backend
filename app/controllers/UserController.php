@@ -39,24 +39,25 @@ class UserController extends \BaseController {
 				$destinationPath = 'uploads/images';
 				$details['photo'] = $fileName;
 
-				if(($file->move($destinationPath, $fileName)))
-				{
-					if(User::create($details))
-						return Response::json(['success' => true,
-												'alert' => 'Successfully created user']);
-					else
-						return Response::json(['success' => false,
-												'alert' => 'Failed to create user']);
-				}
-				else
+				if(!($file->move($destinationPath, $fileName)))
 				{
 					return Response::json(['success' => false,
 											'alert' => 'Failed to upload image']);
 				}
 			}
 
-
-
+			if(User::create($details))
+			{
+				return Response::json(['success' => true,
+										'alert' => 'Successfully created user']);
+			}
+			else
+			{
+				if(Input::has('image'))
+					File::delete($destinationPath, $fileName);
+				return Response::json(['success' => false,
+										'alert' => 'Failed to create user']);
+			}
 		}
 	}
 

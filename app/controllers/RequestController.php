@@ -106,7 +106,13 @@ class RequestController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
-		Requestx::destroy($id);
+		if(Requestx::destroy($id))
+			return Response::json(['success' => true,
+									'alert' => 'Request deleted']);
+		else
+			return Response::json(['success' => true,
+									'alert' => 'Request deleted']);
+
 	}
 
 
