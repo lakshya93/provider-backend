@@ -19,7 +19,7 @@ class CreateReviewsTable extends Migration {
 			$table->integer('user_id')->unsigned();
 			$table->foreign('user_id')->references('id')->on('users');
 			$table->integer('service_id')->unsigned();
-			$table->foreign('service_id')->references('id')->on('service_types')
+			$table->foreign('service_id')->references('id')->on('services')
 				->onDelete('cascade')->onUpdate('cascade');
 			$table->longText('description');
 
