@@ -182,7 +182,7 @@ class UserController extends \BaseController {
 		if(Auth::attempt($credentials, true))
 		{
 			$user = User::where('email', $credentials['email'])->get();
-			return Response::json(['success' => true.
+			return Response::json(['success' => true,
 									'user' => $user]);
 		}
 	}
