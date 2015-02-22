@@ -21,6 +21,7 @@ class ServiceTypesTableSeeder extends Seeder {
         ServiceType::create([
             'id' => 3,
             'name' => 'Cook',
+            'icon' => 'ion-pizza',         
             ]);
 
         ServiceType::create([

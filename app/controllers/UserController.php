@@ -146,7 +146,7 @@ class UserController extends \BaseController {
 			if($validate->fails())
 			{
 				return Response::json(['success' => false,
-										'alert' => 'Email ID not unique',
+										'alert' => 'Email ID not unique']);
 			}
 		}
 

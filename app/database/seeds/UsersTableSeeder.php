@@ -31,7 +31,7 @@ class UsersTableSeeder extends Seeder {
             'mobile' => '9035209244',
             'zipcode' => '560999',
             'lamdline' => '0801234567',
-            'city' => 'Bangalore',            
+            'city' => 'Bangalore',
             ]);
     }
 }

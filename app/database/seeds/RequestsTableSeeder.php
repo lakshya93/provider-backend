@@ -27,7 +27,7 @@ class RequestsTableSeeder extends Seeder {
         Requestx::create([
             'user_id' => 2,
             'service_id' => 2,
-            'status' => 'pending',
+            'status' => 'accepted',
         ]);
 
     }
