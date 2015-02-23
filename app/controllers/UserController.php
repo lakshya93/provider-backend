@@ -190,6 +190,9 @@ class UserController extends \BaseController {
 			return Response::json(['success' => true,
 									'user' => $user]);
 		}
+		else
+			return Response::json(['success' => false,
+									'alert' => 'Invalid Credentials']);
 	}
 
 	public function logout()
