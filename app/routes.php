@@ -20,6 +20,6 @@ Route::resource('services', 'ServiceController', ['except' => ['create', 'edit']
 Route::resource('services.reviews', 'ReviewController', ['only' => ['index', 'store', 'destroy']]);
 Route::resource('services.images', 'ImageController', ['except' => ['create', 'edit', 'show']]);
 
-Route::get('requests/sent-requests', 'RequestController@sentRequests');
-Route::get('requests/received-requests', 'RequestController@receivedRequests');
-Route::resource('requests', 'RequestController', ['only' => ['index', 'store', 'update', 'destroy']]);
+// Route::get('requests/sent-requests', 'RequestController@sentRequests');
+// Route::get('requests/received-requests', 'RequestController@receivedRequests');
+Route::resource('requests', 'RequestController');
