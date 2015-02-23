@@ -140,16 +140,16 @@ class UserController extends \BaseController {
 		}
 
 		//update only details
-		if(Input::has('email'))
-		{
-			$validate = Validator::make(Input::all(), User::$emailUpdateRules);
+		// if(Input::has('email'))
+		// {
+			// $validate = Validator::make(Input::all(), User::$emailUpdateRules);
 
-			if($validate->fails())
-			{
-				return Response::json(['success' => false,
-										'alert' => 'Email ID not unique']);
-			}
-		}
+			// if($validate->fails())
+			// {
+				// return Response::json(['success' => false,
+										// 'alert' => 'Email ID not unique']);
+			// }
+		// }
 
 		if($user->update($details))
 		{
