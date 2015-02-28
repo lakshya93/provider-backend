@@ -22,7 +22,8 @@ class ServiceController extends \BaseController {
 		else
 			$services = Service::all();
 
-		foreach($services as $service) {
+		foreach($services as $service)
+		{
 			$service->images = Image::where('service_id', $service->id)->get();
 		}
 
@@ -34,11 +35,6 @@ class ServiceController extends \BaseController {
 	}
 
 
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @return Response
-	 */
 	public function store()
 	{
 		$validate = Validator::make(Input::all(), Service::$rules);
@@ -50,7 +46,7 @@ class ServiceController extends \BaseController {
 		}
 		else
 		{
-			$details = Input::all();
+			// $details = Input::all();
 			if(Service::create(Input::all()))
 				return Response::json(['success' => true,
 					'alert' => 'Successfully created service']);
@@ -61,12 +57,6 @@ class ServiceController extends \BaseController {
 	}
 
 
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
 	public function show($id)
 	{
 		$service = Service::find($id);
@@ -91,12 +81,7 @@ class ServiceController extends \BaseController {
 	{
 		$service = Service::find($id);
 		$details = Input::all();
-		if(Input::has('rating'))
-		{
-			$details['rating'] = $service->rating * $service->rate_count + Input::get('rating');
-			$details['rate_count'] = $service->rate_count + 1;
-			$details['rating'] = $details['rating'] / $details['rate_count'];
-		}
+
 		if($service->update($details))
 			return Response::json(['success' => true,
 				'alert' => 'Successfully updated service']);

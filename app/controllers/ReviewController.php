@@ -35,23 +35,69 @@ class ReviewController extends \BaseController {
 		}
 		else
 		{
-			$details = Input::all();
-			$details['service_id'] = $serviceId;
-			if(Review::create($details))
+			$reviewDetails = Input::all();
+			$reviewDetails['service_id'] = $serviceId;
+			$service = Service::find($serviceId);
+			$serviceDetails = [];
+
+			if(Input::has('rating'))
+			{
+				if($service->rate_count > 0)
+				{
+					$serviceDetails['rating'] = $service->rating * $service->rate_count + Input::get('rating');
+					$serviceDetails['rate_count'] = $service->rate_count + 1;
+					$serviceDetails['rating'] = $serviceDetails['rating'] / $serviceDetails['rate_count'];
+				}
+				else
+				{
+					$serviceDetails['rating'] = Input::get('rating');
+					$serviceDetails['rate_count'] = 1;
+				}
+			}
+
+			if($service->update($serviceDetails) && Review::create($reviewDetails))
+			{
 				return Response::json(['success' => true,
 					                   'alert' => 'Successfully created review']);
+			}
 			else
 				return Response::json(['success' => false,
 					                   'alert' => 'Failed to create review']);
 		}
 	}
 
-	/**
-	 * Remove the specified resource from storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
+	public function update($serviceId, $id)
+	{
+		$review = Review::find($id);
+		$service = Service::find($serviceId);
+		$details = [];
+		if($serviceId == $review->service_id)
+		{
+			if(Input::has('rating'))
+			{
+				$newRating = Input::get('rating');
+				$oldRating = $review->rating;
+
+				if($oldRating != -1)
+					$details['rating'] = ($service->rating * $service->rate_count - $oldRating + $newRating) / $service->rate_count;
+				else
+				{
+					$details['rate_count'] = $service->rate_count + 1;
+					$details['rating'] = ($service->rating * $service->rate_count + $newRating) / $details['rate_count'];
+				}
+				//return Response::json($details);
+			}
+
+			if($service->update($details) && $review->update(Input::all()))
+				return Response::json(['success' => true,
+										'alert' => 'Successfully updated review']);
+			else
+				return Response::json(['success' => false,
+										'alert' => 'Failed to update review']);
+		}
+	}
+
+
 	public function destroy($serviceId, $id)
 	{
 		$review = Review::find($id);

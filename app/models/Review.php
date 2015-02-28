@@ -4,7 +4,7 @@ class Review extends Eloquent {
 
 	protected $table = 'reviews';
 
-	protected $fillable = ['user_id', 'service_id', 'description'];
+	protected $fillable = ['user_id', 'service_id', 'description', 'rating'];
 
 	public static $rules = [
 		'user_id' => 'required',

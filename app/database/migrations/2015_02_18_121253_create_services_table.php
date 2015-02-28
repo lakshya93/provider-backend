@@ -20,15 +20,17 @@ class CreateServicesTable extends Migration {
 			$table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
 			$table->integer('service_type_id')->unsigned();
 			$table->foreign('service_type_id')->references('id')->on('service_types')->onUpdate('cascade')->onDelete('cascade');
-			$table->integer('rating');
+			$table->float('rating');
 			$table->integer('rate_count')->unsigned()->default(0);
 
-			$table->string('business_name');
-			$table->longText('business_address');
-			$table->string('business_mobile');
-			$table->string('business_landline');
-			$table->string('business_zipcode');
-			$table->string('business_city');
+			$table->string('name');
+			$table->longText('address');
+			$table->string('mobile');
+			$table->string('landline');
+			$table->string('zipcode');
+			$table->string('city');
+			$table->decimal('gps_latitude',10,7);
+			$table->decimal('gps_longitude',10,7);
 
 			$table->timestamps();
 		});

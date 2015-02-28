@@ -27,6 +27,8 @@ class CreateUsersTable extends Migration {
 			$table->string('landline');
 			$table->string('zipcode');
 			$table->string('city');
+			$table->decimal('gps_latitude',10,7);
+			$table->decimal('gps_longitude',10,7);
 
 			$table->rememberToken();
 			$table->timestamps();

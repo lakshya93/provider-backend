@@ -17,7 +17,7 @@ Route::get('logout', 'UserController@logout');//->before('auth');
 Route::resource('users', 'UserController', ['except' => ['create', 'edit']]);
 Route::resource('service-types', 'ServiceTypeController', ['except' => ['create', 'edit']]);
 Route::resource('services', 'ServiceController', ['except' => ['create', 'edit']]);
-Route::resource('services.reviews', 'ReviewController', ['only' => ['index', 'store', 'destroy']]);
+Route::resource('services.reviews', 'ReviewController', ['only' => ['index', 'store', 'update', 'destroy']]);
 Route::resource('services.images', 'ImageController', ['except' => ['create', 'edit', 'show']]);
 
 // Route::get('requests/sent-requests', 'RequestController@sentRequests');
