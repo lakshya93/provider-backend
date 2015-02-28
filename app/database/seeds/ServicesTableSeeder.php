@@ -16,7 +16,9 @@ class ServicesTableSeeder extends Seeder {
             'mobile' => '+919012345678',
             'landline' => '08012345678',
             'zipcode' => '560999',
-            'city' => 'Bangalore'
+            'city' => 'Bangalore',
+            'gps_latitude' => 12.908483,
+            'gps_longitude' => 77.566245
         ]);
 
         Service::create([
@@ -29,7 +31,9 @@ class ServicesTableSeeder extends Seeder {
             'mobile' => '+919012345678',
             'landline' => '08012345678',
             'zipcode' => '560999',
-            'city' => 'Bangalore'
+            'city' => 'Bangalore',
+            'gps_latitude' => 12.906025,
+            'gps_longitude' => 77.573240
         ]);
 
         Service::create([
@@ -42,7 +46,9 @@ class ServicesTableSeeder extends Seeder {
             'mobile' => '+919012345678',
             'landline' => '08012345678',
             'zipcode' => '560999',
-            'city' => 'Bangalore'
+            'city' => 'Bangalore',
+            'gps_latitude' => 12.92000,
+            'gps_longitude' => 77.55000
         ]);
 
         Service::create([
@@ -55,7 +61,9 @@ class ServicesTableSeeder extends Seeder {
             'mobile' => '+919012345678',
             'landline' => '08012345678',
             'zipcode' => '560999',
-            'city' => 'Bangalore'
+            'city' => 'Bangalore',
+            'gps_latitude' => 12.898483,
+            'gps_longitude' => 77.560245
         ]);
 
     }

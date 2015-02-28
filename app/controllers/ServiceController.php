@@ -9,6 +9,7 @@ class ServiceController extends \BaseController {
 	 */
 	public function index()
 	{
+		$user = User::find(Input::get('user_id'));
 		if(Input::has('service_type'))
 		{
 			$serviceTypeId = ServiceType::where('name', Input::get('service_type'))->first()->id;
@@ -25,6 +26,7 @@ class ServiceController extends \BaseController {
 		foreach($services as $service)
 		{
 			$service->images = Image::where('service_id', $service->id)->get();
+			$service->range = GPS::calcDistance($user->gps_latitude, $user->gps_longitude, $service->gps_latitude, $service->gps_longitude);
 		}
 
 		if($services)

@@ -18,6 +18,8 @@ class UsersTableSeeder extends Seeder {
             'zipcode' => '560999',
             'landline' => '0801234567',
             'city' => 'Bangalore',
+            'gps_latitude' => 12.9050384,
+            'gps_longitude' => 77.5648224
             ]);
 
         User::create([
@@ -32,6 +34,8 @@ class UsersTableSeeder extends Seeder {
             'zipcode' => '560999',
             'landline' => '0801234567',
             'city' => 'Bangalore',
+            'gps_latitude' => 12.9050384,
+            'gps_longitude' => 77.5648224
             ]);
     }
 }
