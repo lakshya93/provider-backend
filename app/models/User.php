@@ -34,6 +34,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 
 	public static $emailUpdateRules = [
 			'new_email' => 'unique:users,email',
+			'new_email' => 'required'
 		];
 
 	protected $hidden = array('password', 'remember_token');

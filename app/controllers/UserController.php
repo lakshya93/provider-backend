@@ -143,10 +143,14 @@ class UserController extends \BaseController {
 
 		if(Input::has('new_email'))
 		{
-			$validate = Validator::make(Input::get('new_email'));
+			$validate = Validator::make(Input::all(), User::$emailUpdateRules);
 			if($validate->fails())
 			{
 				array_push($messages, 'Email ID not unique');
+			}
+			else
+			{
+				$details['email'] = Input::get('new_email');
 			}
 		}
 
@@ -154,7 +158,7 @@ class UserController extends \BaseController {
 		{
 			$updatedUser = User::find($user->id);
 			return Response::json(['success' => true,
-									'messages' => $messages,
+									'alert' => $messages,
 									'user' => $updatedUser]);
 		}
 		else
