@@ -14,10 +14,6 @@ class GPS {
         * @param float $earthRadius Mean earth radius in [m]
         * @return float Distance between points in [m] (same as earthRadius)
         */
-
-        // $latitudeFrom = Input::get('lat1'); $longitudeFrom = Input::get('lon1');
-        // $latitudeTo = Input::get('lat2'); $longitudeTo = Input::get('lon2');
-
         $earthRadius = 6371000;
 
         // convert from degrees to radians

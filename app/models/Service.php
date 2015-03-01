@@ -5,7 +5,7 @@ class Service extends Eloquent {
 	protected $table = 'services';
 
 	protected $fillable = ['user_id', 'service_type_id', 'rating', 'rate_count', 'name', 'address',
-		'mobile', 'landline', 'zipcode', 'city'];
+		'mobile', 'landline', 'zipcode', 'city', 'gps_latitude', 'gps_longitude'];
 
 	public static $rules = [
 		'user_id' => 'required',

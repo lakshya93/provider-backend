@@ -10,12 +10,12 @@ class ServiceController extends \BaseController {
 	public function index()
 	{
 		$user = User::find(Input::get('user_id'));
-		if(Input::has('service_type'))
-		{
-			$serviceTypeId = ServiceType::where('name', Input::get('service_type'))->first()->id;
-			$services = Service::where('service_type_id', $serviceTypeId)->get();
-		}
-		else if(Input::has('user_id'))
+		// if(Input::has('service_type'))
+		// {
+		// 	$serviceTypeId = ServiceType::where('name', Input::get('service_type'))->first()->id;
+		// 	$services = Service::where('service_type_id', $serviceTypeId)->get();
+		// }
+		/*else>*/ if(Input::has('user_id'))
 		{
 			$services = Service::where('user_id', Input::get('user_id'))->get();
 		}
@@ -27,6 +27,7 @@ class ServiceController extends \BaseController {
 		{
 			$service->images = Image::where('service_id', $service->id)->get();
 			$service->range = GPS::calcDistance($user->gps_latitude, $user->gps_longitude, $service->gps_latitude, $service->gps_longitude);
+			$service->service_type_name = ServiceType::find($service->service_type_id)->name;
 		}
 
 		if($services)

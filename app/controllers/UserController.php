@@ -31,9 +31,9 @@ class UserController extends \BaseController {
 		{
 			$details = Input::all();
 			$details['password'] = Hash::make(Input::get('password'));
-			if(Input::hasFile('image'))
+			if(Input::hasFile('photo'))
 			{
-				$file = Input::file('image');
+				$file = Input::file('photo');
 				$extension = $file->getClientOriginalExtension();
 				$fileName = str_random(16) . '.' . $extension;
 				$destinationPath = 'uploads/images';
@@ -89,73 +89,72 @@ class UserController extends \BaseController {
 		$details = Input::all();
 		$user = User::find($id);
 
-		$imageFlag = 0;
+		$messages = [];
 		$passwordFlag = 0;
 
 		//upload new image and delte old one
-		if(Input::hasFile('image'))
+		if(Input::hasFile('photo'))
 		{
-			$file = Input::file('image');
+			$file = Input::file('photo');
 			$extension = $file->getClientOriginalExtension();
 			$destinationPath = 'uploads/images';
 
 			$oldFileName = $user->photo;
 
-			$newfileName = str_random(16) . '.' . $extension;
-			$details['photo'] = $newfileName;
-			if(($file->move($destinationPath, $newfileName)))
+			$newFileName = str_random(16) . '.' . $extension;
+			$details['photo'] = $newFileName;
+			if(($file->move($destinationPath, $newFileName)))
 			{
 				File::delete($destinationPath, $oldFileName);
 			}
 			else
 			{
-				return Response::json(['success' => false,
-										'alert' => 'Failed to upload Photo']);
+				array_push($messages, 'Failed To upload photo');
+				$details['photo'] = $oldFileName;
 			}
 		}
 
 		//change password
-		if(Input::has('oldPassword') && Input::has('newPassword'))
+		if(Input::has('old_password') && Input::has('new_password'))
 		{
-			$validate = Validator::make(Input::all(), User::$newPasswordUpdateRules);
-			if($validate->fails)
+			$validate = Validator::make(Input::all(), User::$newPasswordUpdateRules);		//requires email to update password
+			if($validate->fails())
 			{
-				return Response::json(['success' => false,
-										'alert' => 'Password must have a minimum length of 4 characters']);
+				array_push($messages, 'Password must have a minimum length of 4 characters');
+				// return Response::json(['success' => false,
+				// 						'alert' => 'Password must have a minimum length of 4 characters']);
 			}
 			else
 			{
 				$credentials = ['email' => $user['email'],
-								'password' => $details['oldPassword']];
-				if(!(Auth::validate($credentials)))
+								'password' => $details['old_password']];
+				if(Auth::validate($credentials))
 				{
-					return Response::json(['success' => false,
-											'alert' => 'Old password does not match']);
+					$details['password'] = Hash::make(Input::get('new_password'));
+					// return Response::json(['success' => false,
+					// 						'alert' => 'Old password does not match']);
 				}
 				else
 				{
-					$details['password'] = Hash::make(Input::get('newPassword'));
+					array_push($messages, 'Incorrect Password');
 				}
 			}
 		}
 
-		//update only details
-		// if(Input::has('email'))
-		// {
-			// $validate = Validator::make(Input::all(), User::$emailUpdateRules);
-
-			// if($validate->fails())
-			// {
-				// return Response::json(['success' => false,
-										// 'alert' => 'Email ID not unique']);
-			// }
-		// }
+		if(Input::has('new_email'))
+		{
+			$validate = Validator::make(Input::get('new_email'));
+			if($validate->fails())
+			{
+				array_push($messages, 'Email ID not unique');
+			}
+		}
 
 		if($user->update($details))
 		{
 			$updatedUser = User::find($user->id);
 			return Response::json(['success' => true,
-									'alert' => 'Successfully updated details',
+									'messages' => $messages,
 									'user' => $updatedUser]);
 		}
 		else
