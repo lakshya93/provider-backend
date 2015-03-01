@@ -15,7 +15,7 @@ class ServiceController extends \BaseController {
 		// 	$serviceTypeId = ServiceType::where('name', Input::get('service_type'))->first()->id;
 		// 	$services = Service::where('service_type_id', $serviceTypeId)->get();
 		// }
-		/*else>*/ if(Input::has('user_id'))
+		/*else>*/ if(Input::has('my_services'))
 		{
 			$services = Service::where('user_id', Input::get('user_id'))->get();
 		}
