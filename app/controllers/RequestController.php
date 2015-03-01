@@ -38,7 +38,7 @@ class RequestController extends \BaseController {
 					$request['user'] = User::find($request->user_id);		// user_name => requester's name
 
 					$service = Service::find($request->service_id);
-					$request['business_name'] = $service->business_name;
+					$request['service_name'] = $service->name;
 				}
 				return Response::json($requests);
 			}
@@ -127,7 +127,7 @@ class RequestController extends \BaseController {
 				$request['user'] = User::find($request->user_id);		// user_name => requester's name
 
 				$service = Service::find($request->service_id);
-				$request['business_name'] = $service->business_name;
+				$request['service_name'] = $service->service_name;
 			}
 			return Response::json($requests);
 		}
