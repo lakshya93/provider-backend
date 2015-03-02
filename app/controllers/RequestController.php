@@ -20,7 +20,7 @@ class RequestController extends \BaseController {
 				return Response::json($requests);
 			}
 		}
-		
+
 		else if(Input::has('received_requests'))
 		{
 			$userId = Input::get('user_id');
@@ -61,7 +61,17 @@ class RequestController extends \BaseController {
 		else
 		{
 			$details = Input::all();
+			$userId = Input::get('user_id');
+			$serviceId = Input::get('service_id');
+			$service = Service::find($serviceId);
+
 			$details['status'] = 'pending';
+
+			if($userId = $service->user_id)
+			{
+				return Response::json(['success' => false,
+					'alert' => 'Cannot request for your own service!']);
+			}
 			if(Requestx::create($details))
 				return Response::json(['success' => true,
 					'alert' => 'Request sent']);
