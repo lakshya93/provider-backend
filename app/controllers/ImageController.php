@@ -2,23 +2,22 @@
 
 class ImageController extends \BaseController {
 
-	/**
-	 * Display a listing of the resource.
-	 *
-	 * @return Response
-	 */
 	public function index($serviceId)
 	{
-		$images = Image::where('service_id', $serviceId)->get();
-		return Response::json($images);
+		if(Input::has('certificates'))
+		{
+			$images = Image::where('service_id', $serviceId)->where('certificate', 1)->get();
+			return Response::json($images);
+		}
+		else
+		{
+			$images = Image::where('service_id', $serviceId)->where('certificate', 0)->get();
+			return Response::json($images);
+		}
 	}
 
 
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @return Response
-	 */
+	
 	public function store($serviceId)
 	{
 		$details = Input::all();
