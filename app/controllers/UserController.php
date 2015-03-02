@@ -2,22 +2,14 @@
 
 class UserController extends \BaseController {
 
-	/**
-	 * Display a listing of the resource.
-	 *
-	 * @return Response
-	 */
 	public function index()
 	{
 		$users = User::all();
 		return Response::json($users);
 	}
 
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @return Response
-	 */
+
+
 	public function store()
 	{
 		$validate = Validator::make(Input::all(), User::$storeRules);
@@ -53,7 +45,7 @@ class UserController extends \BaseController {
 			}
 			else
 			{
-				if(Input::has('image'))
+				if(Input::has('photo'))
 					File::delete($destinationPath, $fileName);
 				return Response::json(['success' => false,
 										'alert' => 'Failed to create user']);
@@ -61,12 +53,8 @@ class UserController extends \BaseController {
 		}
 	}
 
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
+
+
 	public function show($id)
 	{
 		$user = User::find($id);
@@ -78,12 +66,7 @@ class UserController extends \BaseController {
 	}
 
 
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
+
 	public function update($id)
 	{
 		$details = Input::all();
@@ -91,55 +74,6 @@ class UserController extends \BaseController {
 
 		$messages = [];
 		$passwordFlag = 0;
-
-		//upload new image and delte old one
-		if(Input::hasFile('photo'))
-		{
-			$file = Input::file('photo');
-			$extension = $file->getClientOriginalExtension();
-			$destinationPath = 'uploads/images';
-
-			$oldFileName = $user->photo;
-
-			$newFileName = str_random(16) . '.' . $extension;
-			$details['photo'] = $newFileName;
-			if(($file->move($destinationPath, $newFileName)))
-			{
-				File::delete($destinationPath, $oldFileName);
-			}
-			else
-			{
-				array_push($messages, 'Failed To upload photo');
-				$details['photo'] = $oldFileName;
-			}
-		}
-
-		//change password
-		if(Input::has('old_password') && Input::has('new_password'))
-		{
-			$validate = Validator::make(Input::all(), User::$newPasswordUpdateRules);		//requires email to update password
-			if($validate->fails())
-			{
-				array_push($messages, 'Password must have a minimum length of 4 characters');
-				// return Response::json(['success' => false,
-				// 						'alert' => 'Password must have a minimum length of 4 characters']);
-			}
-			else
-			{
-				$credentials = ['email' => $user['email'],
-								'password' => $details['old_password']];
-				if(Auth::validate($credentials))
-				{
-					$details['password'] = Hash::make(Input::get('new_password'));
-					// return Response::json(['success' => false,
-					// 						'alert' => 'Old password does not match']);
-				}
-				else
-				{
-					array_push($messages, 'Incorrect Password');
-				}
-			}
-		}
 
 		if(Input::has('new_email'))
 		{
@@ -157,6 +91,8 @@ class UserController extends \BaseController {
 		if($user->update($details))
 		{
 			$updatedUser = User::find($user->id);
+			array_push($messages, 'Profile updated');
+
 			return Response::json(['success' => true,
 									'alert' => $messages,
 									'user' => $updatedUser]);
@@ -167,12 +103,8 @@ class UserController extends \BaseController {
 	}
 
 
-	/**
-	 * Remove the specified resource from storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
+
+
 	public function destroy($id)
 	{
 		if(User::destroy($id))
@@ -182,6 +114,9 @@ class UserController extends \BaseController {
 			return Response::json(['success' => false,
 									'alert' => 'Failed to delete user']);
 	}
+
+
+
 
 	public function login()
 	{
@@ -198,6 +133,9 @@ class UserController extends \BaseController {
 									'alert' => 'Invalid Credentials']);
 	}
 
+
+
+
 	public function logout()
 	{
 		Auth::logout();
@@ -205,4 +143,82 @@ class UserController extends \BaseController {
 								'alert' => 'Logged out']);
 	}
 
+
+
+
+	public function changePassword($id)
+	{
+		//change password
+		$user = User::find($id);
+		if(Input::has('old_password') && Input::has('new_password'))
+		{
+
+			$validate = Validator::make(Input::all(), User::$newPasswordUpdateRules);		//requires email to update password
+			if($validate->fails())
+			{
+				//array_push($messages, 'Password must have a minimum length of 4 characters');
+				return Response::json(['success' => false,
+										'alert' => $validate->messages()]);
+			}
+			else
+			{
+				$details = Input::all();
+				$credentials = ['email' => $details['email'],
+								'password' => $details['old_password']];
+				if(Auth::validate($credentials))
+				{
+					$details['password'] = Hash::make(Input::get('new_password'));
+
+					if($user->update($details))
+						return Response::json(['success' => true,
+												'alert' => 'Successfully changed password']);
+					else
+						return Response::json(['success' => false,
+												'alert' => 'Failed to change password']);
+
+				}
+				else
+				{
+					return Response::json(['success' => false,
+											'alert' => 'Incorrect Password']);
+				}
+			}
+		}
+	}
+
+
+
+	public function changePhoto($id)
+	{
+		//upload new image and delte old one
+		$user = User::find($id);
+		$details = [];
+		if(Input::hasFile('photo'))
+		{
+			$file = Input::file('photo');
+			$extension = $file->getClientOriginalExtension();
+			$destinationPath = 'uploads/images';
+
+			$oldFileName = $user->photo;
+
+			$newFileName = str_random(16) . '.' . $extension;
+			$details['photo'] = $newFileName;
+			if(($file->move($destinationPath, $newFileName)))
+			{
+				File::delete($destinationPath, $oldFileName);
+				if($user->update($details))
+					return Response::json(['success' => true,
+											'alert' => 'Successfully changed photo']);
+				else
+					return Response::json(['success' => false,
+											'alert' => 'Failed to change photo']);
+
+			}
+			else
+			{
+				return Response::json(['success' => false,
+										'alert' => 'Failed to upload photo']);
+			}
+		}
+	}
 }

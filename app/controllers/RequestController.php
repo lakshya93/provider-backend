@@ -20,6 +20,7 @@ class RequestController extends \BaseController {
 				return Response::json($requests);
 			}
 		}
+		
 		else if(Input::has('received_requests'))
 		{
 			$userId = Input::get('user_id');

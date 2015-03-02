@@ -13,8 +13,12 @@ header('Access-Control-Allow-Origin: *');
 Route::post('login', 'UserController@login');//->before('guest');
 Route::get('logout', 'UserController@logout');//->before('auth');
 
+Route::post('users/{id}/change-password', 'UserController@changePassword');
+Route::post('users/{id}/change-photo', 'UserController@changePhoto');
+
 
 Route::resource('users', 'UserController', ['except' => ['create', 'edit']]);
+
 Route::resource('service-types', 'ServiceTypeController', ['except' => ['create', 'edit']]);
 Route::resource('services', 'ServiceController', ['except' => ['create', 'edit']]);
 Route::resource('services.reviews', 'ReviewController', ['only' => ['index', 'store', 'update', 'destroy']]);
