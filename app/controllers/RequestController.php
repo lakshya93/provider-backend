@@ -67,7 +67,7 @@ class RequestController extends \BaseController {
 
 			$details['status'] = 'pending';
 
-			if($userId = $service->user_id)
+			if($userId == $service->user_id)
 			{
 				return Response::json(['success' => false,
 					'alert' => 'Cannot request for your own service!']);
