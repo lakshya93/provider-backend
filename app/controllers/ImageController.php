@@ -35,7 +35,7 @@ class ImageController extends \BaseController {
 				if(Image::create($details))
 				{
 					return Response::json(['success' => true,
-											'alert' => 'Sucessfully uploaded image']);
+											'alert' => 'Uploaded image']);
 				}
 				else
 				{
@@ -85,10 +85,18 @@ class ImageController extends \BaseController {
 		$image = Image::find($id);
 		if($image->service_id == $serviceId)
 		{
+			$fileName = $serviceId . '_' . str_random(16) . '.' . $extension;
+			$destinationPath = 'uploads/images';
 			if(Image::destroy($id))
 			{
+				File::delete($destinationPath, $fileName);
 				return Response::json(['success' => true,
-										'alert' => 'Sucessfully deleted image']);
+										'alert' => 'Deleted image']);
+			}
+			else
+			{
+				return Response::json(['success' => false,
+										'alert' => 'Failed to delete image']);
 			}
 		}
 	}

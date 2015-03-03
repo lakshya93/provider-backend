@@ -34,21 +34,21 @@ class UserController extends \BaseController {
 				if(!($file->move($destinationPath, $fileName)))
 				{
 					return Response::json(['success' => false,
-											'alert' => 'Failed to upload image']);
+											'alert' => 'Failed to upload photo']);
 				}
 			}
 
 			if(User::create($details))
 			{
 				return Response::json(['success' => true,
-										'alert' => 'Successfully created user']);
+										'alert' => 'Registered']);
 			}
 			else
 			{
 				if(Input::has('photo'))
 					File::delete($destinationPath, $fileName);
 				return Response::json(['success' => false,
-										'alert' => 'Failed to create user']);
+										'alert' => 'Failed to register']);
 			}
 		}
 	}
@@ -73,14 +73,15 @@ class UserController extends \BaseController {
 		$user = User::find($id);
 
 		$messages = [];
-		$passwordFlag = 0;
+		$emailFlag = true;
 
 		if(Input::has('new_email'))
 		{
 			$validate = Validator::make(Input::all(), User::$emailUpdateRules);
 			if($validate->fails())
 			{
-				array_push($messages, 'Email ID not unique');
+				$emailFlag = false;
+				// array_push($messages, 'Email ID not unique');
 			}
 			else
 			{
@@ -91,11 +92,18 @@ class UserController extends \BaseController {
 		if($user->update($details))
 		{
 			$updatedUser = User::find($user->id);
-			array_push($messages, 'Profile updated');
-
-			return Response::json(['success' => true,
-									'alert' => $messages,
-									'user' => $updatedUser]);
+			// array_push($messages, 'Profile updated');
+			if($emailFlag)
+			{
+				return Response::json(['success' => true,
+										'alert' => 'Profile Updated',
+			}
+			else
+			{
+				return Response::json(['success' => true,
+										'alert' => 'Profile Updated',
+										'user' => $updatedUser]);
+			}
 		}
 		else
 			return Response::json(['success' => false,
