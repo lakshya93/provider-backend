@@ -11,6 +11,9 @@ class Service extends Eloquent {
 		'user_id' => 'required',
 		'service_type_id' => 'required',
 		'name' => 'required',
+		'mobile' => 'numeric | digits:10',
+		'landline' => 'numeric | digits:11',
+		'zipcode' => 'numeric | digits:6'
 	];
 
 	public function user()

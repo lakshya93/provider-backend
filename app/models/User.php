@@ -23,7 +23,11 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 		'first_name' => 'required',
 		'last_name' => 'required',
 		'email' => 'required | unique:users,email',
-		'password' => 'required | min:4'
+		'password' => 'required | min:4',
+
+		'mobile' => 'numeric | digits:10',
+		'landline' => 'numeric | digits:11',
+		'zipcode' => 'numeric | digits:6'
 	];
 
 	public static $newPasswordUpdateRules = [

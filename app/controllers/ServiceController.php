@@ -9,8 +9,8 @@ class ServiceController extends \BaseController {
 	 */
 	public function index()
 	{
-		$user = Auth::user();
-		// $user = User::find(Input::get('user_id'));
+		// $user = Auth::user();
+		$user = User::find(Input::get('user_id'));
 		// if(Input::has('service_type'))
 		// {
 		// 	$serviceTypeId = ServiceType::where('name', Input::get('service_type'))->first()->id;

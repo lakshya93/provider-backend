@@ -15,13 +15,14 @@ Route::get('logout', 'UserController@logout');//->before('auth');
 
 
 
-Route::resource('users', 'UserController', ['except' => ['create', 'edit']]);
-Route::post('users/{id}/change-password', 'UserController@changePassword');
-Route::post('users/{id}/change-photo', 'UserController@changePhoto');
+Route::post('users/{id}/change-password', 'UserController@changePassword');//->before('auth');
+Route::post('users/{id}/change-photo', 'UserController@changePhoto');//->before('auth');
 
-Route::resource('service-types', 'ServiceTypeController', ['except' => ['create', 'edit']]);
-Route::resource('services', 'ServiceController', ['except' => ['create', 'edit']]);
-Route::resource('services.reviews', 'ReviewController', ['only' => ['index', 'store', 'update', 'destroy']]);
-Route::resource('services.images', 'ImageController', ['except' => ['create', 'edit', 'show']]);
-
-Route::resource('requests', 'RequestController');
+// Route::group(['before' => 'auth', function() {
+	Route::resource('users', 'UserController', ['except' => ['create', 'edit']]);
+	Route::resource('service-types', 'ServiceTypeController', ['except' => ['create', 'edit']]);
+	Route::resource('services', 'ServiceController', ['except' => ['create', 'edit']]);
+	Route::resource('services.reviews', 'ReviewController', ['only' => ['index', 'store', 'update', 'destroy']]);
+	Route::resource('services.images', 'ImageController', ['except' => ['create', 'edit', 'show']]);
+	Route::resource('requests', 'RequestController');
+// });

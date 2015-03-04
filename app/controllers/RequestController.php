@@ -12,9 +12,10 @@ class RequestController extends \BaseController {
 			if($requests) {
 				foreach($requests as $request) {
 					$request['service'] = Service::find($request->service_id);
+					$request['service']->service_type_icon = ServiceType::find($request['service']->service_type_id)->icon;
 
-					$user = User::find($request['service']->user_id);
-					$request['service']->user_name = $user->first_name . ' ' . $user->last_name;		//user_name => provider's name
+					// $user = User::find($request['service']->user_id);
+					// $request['service']->user_name = $user->first_name . ' ' . $user->last_name;		//user_name => provider's name
 
 				}
 				return Response::json($requests);

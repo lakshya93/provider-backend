@@ -8,7 +8,8 @@ class Review extends Eloquent {
 
 	public static $rules = [
 		'user_id' => 'required',
-		'description' => 'required'
+		'description' => 'required',
+		'rating' => 'numeric | digits:1 | between:0,5'
 	];
 
 	public function service()
