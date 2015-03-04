@@ -21,7 +21,7 @@ class CreateReviewsTable extends Migration {
 			$table->integer('service_id')->unsigned();
 			$table->foreign('service_id')->references('id')->on('services')->onDelete('cascade')->onUpdate('cascade');
 			$table->longText('description');
-			$table->integer('rating')->default(-1);
+			$table->integer('rating')->default(0);
 
 			$table->timestamps();
 		});
