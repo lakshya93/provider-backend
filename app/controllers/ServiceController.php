@@ -9,7 +9,8 @@ class ServiceController extends \BaseController {
 	 */
 	public function index()
 	{
-		$user = User::find(Input::get('user_id'));
+		$user = Auth::user();
+		// $user = User::find(Input::get('user_id'));
 		// if(Input::has('service_type'))
 		// {
 		// 	$serviceTypeId = ServiceType::where('name', Input::get('service_type'))->first()->id;
@@ -17,7 +18,9 @@ class ServiceController extends \BaseController {
 		// }
 		/*else>*/ if(Input::has('my_services'))
 		{
-			$services = Service::where('user_id', Input::get('user_id'))->get();
+			// $services = Service::where('user_id', Input::get('user_id'))->get();
+			$services = Service::where('user_id', $user->id)->get();
+
 		}
 		//remove this else after testing
 		else
@@ -36,7 +39,7 @@ class ServiceController extends \BaseController {
 			return Response::json($services);
 		else
 			return Response::json(['success' => false,
-				'alert' => 'Failed to retrieve services']);
+									'alert' => 'Failed to retrieve services']);
 	}
 
 
@@ -46,18 +49,18 @@ class ServiceController extends \BaseController {
 		if($validate->fails())
 		{
 			return Response::json(['success' => false,
-				'alert' => 'Failed to validate',
-				'messages' => $validate->messages()]);
+									'alert' => 'Failed to validate',
+									'messages' => $validate->messages()]);
 		}
 		else
 		{
 			// $details = Input::all();
 			if(Service::create(Input::all()))
 				return Response::json(['success' => true,
-					'alert' => 'Successfully created service']);
+										'alert' => 'Service created']);
 			else
 				return Response::json(['success' => false,
-					'alert' => 'Failed to create service']);
+										'alert' => 'Failed to create service']);
 		}
 	}
 
@@ -72,7 +75,7 @@ class ServiceController extends \BaseController {
 			return Response::json($service);
 		else
 			return Response::json(['success' => false,
-				'alert' => 'service not found']);
+									'alert' => 'Service not found']);
 	}
 
 
@@ -89,7 +92,7 @@ class ServiceController extends \BaseController {
 
 		if($service->update($details))
 			return Response::json(['success' => true,
-				'alert' => 'Successfully updated service']);
+				'alert' => 'Service updated']);
 		else
 			return Response::json(['success' => false,
 				'alert' => 'Failed to update service']);
@@ -107,7 +110,7 @@ class ServiceController extends \BaseController {
 	{
 		if(Service::destroy($id))
 			return Response::json(['success' => true,
-				'alert' => 'Successfully deleted service']);
+				'alert' => 'Deleted service']);
 		else
 			return Response::json(['success' => false,
 				'alert' => 'Failed to delete service']);

@@ -67,7 +67,7 @@ class ImageController extends \BaseController {
 			if($image->update($details))
 			{
 				return Response::json(['success' => true,
-										'alert' => 'Sucessfully updated image']);
+										'alert' => 'Updated image']);
 			}
 		}
 
@@ -100,6 +100,4 @@ class ImageController extends \BaseController {
 			}
 		}
 	}
-
-
 }

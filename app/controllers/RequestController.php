@@ -55,8 +55,8 @@ class RequestController extends \BaseController {
 		if($validate->fails())
 		{
 			return Response::json(['success' => false,
-				'alert' => 'Failed to validate',
-				'messages' => $validate->messages()]);
+									'alert' => 'Failed to validate',
+									'messages' => $validate->messages()]);
 		}
 		else
 		{
@@ -70,14 +70,14 @@ class RequestController extends \BaseController {
 			if($userId == $service->user_id)
 			{
 				return Response::json(['success' => false,
-					'alert' => 'Cannot request for your own service!']);
+										'alert' => 'Cannot request for your own service!']);
 			}
 			if(Requestx::create($details))
 				return Response::json(['success' => true,
-					'alert' => 'Request sent']);
+										'alert' => 'Request sent']);
 			else
 				return Response::json(['success' => false,
-					'alert' => 'Failed to send request']);
+										'alert' => 'Failed to send request']);
 		}
 	}
 
@@ -88,15 +88,15 @@ class RequestController extends \BaseController {
 		if($validate->fails())
 		{
 			return Response::json(['success' => false,
-				'alert' => 'Failed to validate',
-				'messages' => $validate->messages()]);
+									'alert' => 'Failed to validate',
+									'messages' => $validate->messages()]);
 		}
 		else
 		{
 			$details = Input::all();
 			if($request->update($details))
 				return Response::json(['success' => true,
-					'alert' => 'Successfully updated request']);
+					'alert' => 'Updated request']);
 			else
 				return Response::json(['success' => false,
 					'alert' => 'Failed to update request']);
@@ -160,8 +160,8 @@ class RequestController extends \BaseController {
 			return Response::json(['success' => true,
 									'alert' => 'Request deleted']);
 		else
-			return Response::json(['success' => true,
-									'alert' => 'Request deleted']);
+			return Response::json(['success' => false,
+									'alert' => 'Failed to delete review']);
 
 	}
 

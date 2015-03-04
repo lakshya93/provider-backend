@@ -30,7 +30,7 @@ class ReviewController extends \BaseController {
 		if($validate->fails())
 		{
 			return Response::json(['success' => false,
-				                   'alert'=> 'Failed to store review',
+				                   'alert'=> 'Failed to validate',
 				                   'messages' => $validate->messages()]);
 		}
 		else
@@ -58,11 +58,11 @@ class ReviewController extends \BaseController {
 			if($service->update($serviceDetails) && Review::create($reviewDetails))
 			{
 				return Response::json(['success' => true,
-					                   'alert' => 'Successfully created review']);
+					                   'alert' => 'Reviewed service']);
 			}
 			else
 				return Response::json(['success' => false,
-					                   'alert' => 'Failed to create review']);
+					                   'alert' => 'Failed to review service']);
 		}
 	}
 
@@ -90,7 +90,7 @@ class ReviewController extends \BaseController {
 
 			if($service->update($details) && $review->update(Input::all()))
 				return Response::json(['success' => true,
-										'alert' => 'Successfully updated review']);
+										'alert' => 'Updated review']);
 			else
 				return Response::json(['success' => false,
 										'alert' => 'Failed to update review']);
@@ -105,7 +105,7 @@ class ReviewController extends \BaseController {
 		{
 			if(Review::destroy($id))
 				return Response::json(['success' => true,
-										'alert' => 'Successfully deleted review']);
+										'alert' => 'Deleted review']);
 			else
 				return Response::json(['success' => false,
 										'alert' => 'Failed to delete review']);

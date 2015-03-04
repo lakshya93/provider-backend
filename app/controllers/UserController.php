@@ -96,7 +96,7 @@ class UserController extends \BaseController {
 			if($emailFlag)
 			{
 				return Response::json(['success' => true,
-										'alert' => 'Profile Updated',
+										'alert' => 'Profile Updated']);
 			}
 			else
 			{
@@ -107,7 +107,7 @@ class UserController extends \BaseController {
 		}
 		else
 			return Response::json(['success' => false,
-									'alert' => 'Failed to update details']);
+									'alert' => 'Failed to update profile']);
 	}
 
 
@@ -117,7 +117,7 @@ class UserController extends \BaseController {
 	{
 		if(User::destroy($id))
 			return Response::json(['success' => true,
-									'alert' => 'Successfully deleted user']);
+									'alert' => 'User deleted']);
 		else
 			return Response::json(['success' => false,
 									'alert' => 'Failed to delete user']);
@@ -132,7 +132,8 @@ class UserController extends \BaseController {
 		$credentials['password'] = Input::get('password');
 		if(Auth::attempt($credentials, true))
 		{
-			$user = User::where('email', $credentials['email'])->first();
+			$user = Auth::user();
+			// $user = User::where('email', $credentials['email'])->first();
 			return Response::json(['success' => true,
 									'user' => $user]);
 		}
@@ -147,8 +148,16 @@ class UserController extends \BaseController {
 	public function logout()
 	{
 		Auth::logout();
-		return Response::json(['success' => true,
+		if(Auth::guest())
+		{
+			return Response::json(['success' => true,
 								'alert' => 'Logged out']);
+		}
+		else
+		{
+			return Response::json(['success' => false,
+								'alert' => 'Failed to log out']);
+		}
 	}
 
 
@@ -179,7 +188,7 @@ class UserController extends \BaseController {
 
 					if($user->update($details))
 						return Response::json(['success' => true,
-												'alert' => 'Successfully changed password']);
+												'alert' => 'Password changed']);
 					else
 						return Response::json(['success' => false,
 												'alert' => 'Failed to change password']);
@@ -216,7 +225,7 @@ class UserController extends \BaseController {
 				File::delete($destinationPath, $oldFileName);
 				if($user->update($details))
 					return Response::json(['success' => true,
-											'alert' => 'Successfully changed photo']);
+											'alert' => 'Photo changed']);
 				else
 					return Response::json(['success' => false,
 											'alert' => 'Failed to change photo']);
