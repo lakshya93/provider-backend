@@ -148,16 +148,8 @@ class UserController extends \BaseController {
 	public function logout()
 	{
 		Auth::logout();
-		if(Auth::guest())
-		{
-			return Response::json(['success' => true,
-								'alert' => 'Logged out']);
-		}
-		else
-		{
-			return Response::json(['success' => false,
-								'alert' => 'Failed to log out']);
-		}
+		return Response::json(['success' => true,
+							'alert' => 'Logged out']);
 	}
 
 
