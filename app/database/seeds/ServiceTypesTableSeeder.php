@@ -9,7 +9,7 @@ class ServiceTypesTableSeeder extends Seeder {
         ServiceType::create([
             'id' => 1,
             'name' => 'Electrician',
-            'icon' => 'ion-outlet',
+            'icon' => 'ion-flash',
             ]);
 
         ServiceType::create([

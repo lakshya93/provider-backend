@@ -8,12 +8,6 @@ class RequestsTableSeeder extends Seeder {
 
         Requestx::create([
             'user_id' => 1,
-            'service_id' => 3,
-            'status' => 'pending',
-        ]);
-
-        Requestx::create([
-            'user_id' => 1,
             'service_id' => 4,
             'status' => 'pending',
         ]);
@@ -21,13 +15,25 @@ class RequestsTableSeeder extends Seeder {
         Requestx::create([
             'user_id' => 2,
             'service_id' => 1,
-            'status' => 'pending',
+            'status' => 'accepted',
         ]);
 
         Requestx::create([
             'user_id' => 2,
             'service_id' => 2,
-            'status' => 'accepted',
+            'status' => 'declined',
+        ]);
+
+        Requestx::create([
+            'user_id' => 3,
+            'service_id' => 3,
+            'status' => 'pending',
+        ]);
+
+        Requestx::create([
+            'user_id' => 3,
+            'service_id' => 4,
+            'status' => 'pending',
         ]);
 
     }

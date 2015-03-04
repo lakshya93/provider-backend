@@ -26,6 +26,13 @@ class ReviewController extends \BaseController {
 	 */
 	public function store($serviceId)
 	{
+		$service = Service::find($serviceId);
+		if($service->user_id == Input::get("user_id"))
+		{
+			return Response::json(['success' => false,
+				                   'alert'=> 'Cannot review your own service']);
+		}
+
 		$validate= Validator::make(Input::all(), Review::$rules);
 		if($validate->fails())
 		{
@@ -37,7 +44,6 @@ class ReviewController extends \BaseController {
 		{
 			$reviewDetails = Input::all();
 			$reviewDetails['service_id'] = $serviceId;
-			$service = Service::find($serviceId);
 			$serviceDetails = [];
 
 			if(Input::has('rating'))
@@ -78,7 +84,7 @@ class ReviewController extends \BaseController {
 				$newRating = Input::get('rating');
 				$oldRating = $review->rating;
 
-				if($oldRating != -1)
+				if($oldRating != -1 && $oldRating != 0)
 					$details['rating'] = ($service->rating * $service->rate_count - $oldRating + $newRating) / $service->rate_count;
 				else
 				{
