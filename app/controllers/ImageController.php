@@ -17,7 +17,7 @@ class ImageController extends \BaseController {
 	}
 
 
-	
+
 	public function store($serviceId)
 	{
 		$details = Input::all();
@@ -85,11 +85,10 @@ class ImageController extends \BaseController {
 		$image = Image::find($id);
 		if($image->service_id == $serviceId)
 		{
-			$fileName = $serviceId . '_' . str_random(16) . '.' . $extension;
 			$destinationPath = 'uploads/images';
 			if(Image::destroy($id))
 			{
-				File::delete($destinationPath, $fileName);
+				File::delete($destinationPath, $image->image);
 				return Response::json(['success' => true,
 										'alert' => 'Deleted image']);
 			}
