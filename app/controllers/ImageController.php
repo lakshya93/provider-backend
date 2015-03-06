@@ -17,7 +17,7 @@ class ImageController extends \BaseController {
 	}
 
 
-	
+
 	public function store($serviceId)
 	{
 		$details = Input::all();
@@ -85,7 +85,7 @@ class ImageController extends \BaseController {
 		$image = Image::find($id);
 		if($image->service_id == $serviceId)
 		{
-			$fileName = $serviceId . '_' . str_random(16) . '.' . $extension;
+			$fileName = $image->image;
 			$destinationPath = 'uploads/images';
 			if(Image::destroy($id))
 			{
