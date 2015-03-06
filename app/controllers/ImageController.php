@@ -85,11 +85,10 @@ class ImageController extends \BaseController {
 		$image = Image::find($id);
 		if($image->service_id == $serviceId)
 		{
-			$fileName = $image->image;
 			$destinationPath = 'uploads/images';
 			if(Image::destroy($id))
 			{
-				File::delete($destinationPath, $fileName);
+				File::delete($destinationPath, $image->image);
 				return Response::json(['success' => true,
 										'alert' => 'Deleted image']);
 			}
