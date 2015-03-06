@@ -6,8 +6,8 @@ class RequestController extends \BaseController {
 	{
 		if(Input::has('sent_requests'))
 		{
-			$userId = Input::get('user_id');
-			$requests = Requestx::where('user_id', $userId)->get();
+			$user = User::find(Input::get('user_id'));
+			$requests = Requestx::where('user_id', $user->id)->get();
 			if($requests) {
 				foreach($requests as $request) {
 					$request['service'] = Service::find($request->service_id);
