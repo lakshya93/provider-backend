@@ -72,38 +72,38 @@ class UserController extends \BaseController {
 		$details = Input::all();
 		$user = User::find($id);
 
-		$messages = [];
-		$emailFlag = true;
+		// $messages = [];
+		// $emailFlag = true;
 
-		if(Input::has('new_email'))
-		{
-			$validate = Validator::make(Input::all(), User::$emailUpdateRules);
-			if($validate->fails())
-			{
-				$emailFlag = false;
+		// if(Input::has('new_email'))
+		// {
+			// $validate = Validator::make(Input::all(), User::$emailUpdateRules);
+			// if($validate->fails())
+			// {
+				// $emailFlag = false;
 				// array_push($messages, 'Email ID not unique');
-			}
-			else
-			{
-				$details['email'] = Input::get('new_email');
-			}
-		}
+			// }
+			// else
+			// {
+				// $details['email'] = Input::get('new_email');
+			// }
+		// }
 
 		if($user->update($details))
 		{
 			$updatedUser = User::find($user->id);
 			// array_push($messages, 'Profile updated');
-			if($emailFlag)
-			{
+			// if($emailFlag)
+			// {
+				// return Response::json(['success' => true,
+										// 'alert' => 'Profile updated']);
+			// }
+			// else
+			// {
 				return Response::json(['success' => true,
-										'alert' => 'Profile Updated']);
-			}
-			else
-			{
-				return Response::json(['success' => true,
-										'alert' => 'Profile Updated',
+										'alert' => 'Profile updated',
 										'user' => $updatedUser]);
-			}
+			// }
 		}
 		else
 			return Response::json(['success' => false,
@@ -139,7 +139,7 @@ class UserController extends \BaseController {
 		}
 		else
 			return Response::json(['success' => false,
-									'alert' => 'Invalid Credentials']);
+									'alert' => 'Sorry. Invalid credentials']);
 	}
 
 

@@ -29,7 +29,7 @@ class ServiceController extends \BaseController {
 		foreach($services as $service)
 		{
 			$serviceType = ServiceType::find($service->service_type_id);
-			$service->images = Image::where('service_id', $serviceId)->where('certificate', 0)->get();
+			$service->images = Image::where('service_id', $service->id)->where('certificate', 0)->get();
 			$service->range = GPS::calcDistance($user->gps_latitude, $user->gps_longitude, $service->gps_latitude, $service->gps_longitude);
 			$service->service_type_name = $serviceType->name;
 			$service->service_type_icon = $serviceType->icon;
@@ -68,7 +68,7 @@ class ServiceController extends \BaseController {
 	public function show($id)
 	{
 		$service = Service::find($id);
-		$images = Image::where('service_id', $serviceId)->where('certificate', 0)->get();
+		$images = Image::where('service_id', $id)->where('certificate', 0)->get();
 		if($images && $service)
 			return Response::json([$service, $images]);
 		else if($service)

@@ -2,17 +2,17 @@
 
 class RequestController extends \BaseController {
 
-	//remove index() after testing
 	public function index()
 	{
 		if(Input::has('sent_requests'))
 		{
-			$userId = Input::get('user_id');
-			$requests = Requestx::where('user_id', $userId)->get();
+			$user = User::find(Input::get('user_id'));
+			$requests = Requestx::where('user_id', $user->id)->get();
 			if($requests) {
 				foreach($requests as $request) {
 					$request['service'] = Service::find($request->service_id);
 					$request['service']->service_type_icon = ServiceType::find($request['service']->service_type_id)->icon;
+					$request['service']->range = GPS::calcDistance($user->gps_latitude, $user->gps_longitude, $request['service']->gps_latitude, $request['service']->gps_longitude);
 
 					// $user = User::find($request['service']->user_id);
 					// $request['service']->user_name = $user->first_name . ' ' . $user->last_name;		//user_name => provider's name
@@ -37,10 +37,10 @@ class RequestController extends \BaseController {
 			if($requests) {
 				foreach($requests as $request) {
 
-					$request['user'] = User::find($request->user_id);		// user_name => requester's name
-
 					$service = Service::find($request->service_id);
 					$request['service_name'] = $service->name;
+					$request['user'] = User::find($request->user_id);		// user_name => requester's name
+					$request['user']->range = GPS::calcDistance($request['user']->gps_latitude, $request['user']->gps_longitude, $service->gps_latitude, $service->gps_longitude);
 				}
 				return Response::json($requests);
 			}
@@ -49,6 +49,9 @@ class RequestController extends \BaseController {
 			return Response::json(['success' => false,
 				'alert' => 'Could not retrieve requests']);
 	}
+
+
+
 
 	public function store()
 	{
@@ -82,6 +85,9 @@ class RequestController extends \BaseController {
 		}
 	}
 
+
+
+
 	public function update($id)
 	{
 		$request = Requestx::find($id);
@@ -104,49 +110,53 @@ class RequestController extends \BaseController {
 		}
 	}
 
-	public function sentRequests()			//you are the one who sent request for a service
-	{
-		$userId = Input::get('user_id');
-		$requests = Requestx::where('user_id', $userId)->get();
-		if($requests) {
-			foreach($requests as $request) {
-				$request['service'] = Service::find($request->service_id);
-
-				$user = User::find($request['service']->user_id);
-				$request['service']->user_name = $user->first_name . ' ' . $user->last_name;		//user_name => provider's name
-
-			}
-			return Response::json($requests);
-		}
-	}
 
 
-	public function receivedRequests()
-	{
-		$userId = Input::get('user_id');
-		$serviceIdsObject = Service::select('id')->where('user_id', $userId)->get();
-		$serviceIdsArray = [];
 
-		foreach($serviceIdsObject as $serviceId) {
-			array_push($serviceIdsArray, $serviceId['id']);
-		}
-
-		$requests = Requestx::whereIn('service_id', $serviceIdsArray)->get();
-
-		if($requests) {
-			foreach($requests as $request) {
-
-				$request['user'] = User::find($request->user_id);		// user_name => requester's name
-
-				$service = Service::find($request->service_id);
-				$request['service_name'] = $service->service_name;
-			}
-			return Response::json($requests);
-		}
-		else
-			return Response::json(['success' => false,
-				'alert' => 'Could not retrieve requests']);
-	}
+	// public function sentRequests()
+	// {
+	// 	$userId = Input::get('user_id');
+	// 	$requests = Requestx::where('user_id', $userId)->get();
+	// 	if($requests) {
+	// 		foreach($requests as $request) {
+	// 			$request['service'] = Service::find($request->service_id);
+	//
+	// 			$user = User::find($request['service']->user_id);
+	// 			$request['service']->user_name = $user->first_name . ' ' . $user->last_name;		//user_name => provider's name
+	//
+	// 		}
+	// 		return Response::json($requests);
+	// 	}
+	// }
+	//
+	//
+	//
+	// public function receivedRequests()
+	// {
+	// 	$userId = Input::get('user_id');
+	// 	$serviceIdsObject = Service::select('id')->where('user_id', $userId)->get();
+	// 	$serviceIdsArray = [];
+	//
+	// 	foreach($serviceIdsObject as $serviceId) {
+	// 		array_push($serviceIdsArray, $serviceId['id']);
+	// 	}
+	//
+	// 	$requests = Requestx::whereIn('service_id', $serviceIdsArray)->get();
+	//
+	// 	if($requests) {
+	// 		foreach($requests as $request) {
+	//
+	// 			$request['user'] = User::find($request->user_id);		// user_name => requester's name
+	//
+	// 			$service = Service::find($request->service_id);
+	// 			$request['service_name'] = $service->service_name;
+	// 		}
+	// 		return Response::json($requests);
+	// 	}
+	// 	else
+	// 		return Response::json(['success' => false,
+	// 			'alert' => 'Could not retrieve requests']);
+	// }
 
 
 	/**
